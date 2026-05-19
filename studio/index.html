@@ -908,7 +908,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
    HERO
 ══════════════════════════════════════ */
 .hero{
-  position:relative;min-height:100vh;
+  position:relative;min-height:100dvh;
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;background:#000;
   padding:120px 60px 80px;
@@ -970,6 +970,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   letter-spacing:.07em;text-transform:uppercase;text-decoration:none;
   padding:16px 30px;border-radius:999px;border:none;cursor:pointer;
   transition:all .22s ease;white-space:nowrap;
+  touch-action:manipulation;
 }
 .pill-y{background:var(--y);color:#000;}
 .pill-y:hover{background:var(--y2);transform:translateY(-2px);box-shadow:0 12px 28px rgba(254,200,62,.35);}
@@ -1339,8 +1340,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   h2{font-size:26px;}
   p{font-size:var(--text-m);}
   .hero{padding:80px 24px 80px;}
-  .hero-h1{flex-direction:row;gap:12px;}
-  .hero-h1 h1{font-size:68px;}
+  /* Fix H1 wrap — prevents horizontal overflow on phones */
+  .hero .hero-h1 h1{font-size:54px!important;white-space:normal!important;line-height:1.02!important;}
+  .hero-h1{flex-direction:column!important;align-items:flex-start!important;gap:0!important;margin-bottom:20px;}
+  .hero-sub{margin-bottom:32px;}
   .section,.features,.productions,.wall-strip,.floor-section,.cta-section{padding:60px 24px;}
   .floor-section{padding:60px 24px 0;}
   .stats-inner{grid-template-columns:1fr 1fr;}
@@ -1351,6 +1354,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .wall-text h2{font-size:36px;}
   .specs{grid-template-columns:repeat(2,1fr);}
   .logo-item{height:36px;width:120px;}
+}
+
+/* ══════════════════════════════════════
+   MOBILE OPTIMISATIONS — ≤480px (375/390px devices)
+══════════════════════════════════════ */
+@media(max-width:480px){
+  /* Hero */
+  .hero{padding:80px 20px 56px;}
+  .hero .hero-h1 h1{font-size:44px!important;line-height:1.03!important;}
+  .hero-h1{margin-bottom:14px;}
+  .eyebrow{font-size:8px;letter-spacing:.22em;}
+  .hero-sub{font-size:15px!important;line-height:1.6;margin-bottom:24px;}
+  /* Buttons: stack full-width */
+  .hero-btns{flex-direction:column;gap:10px;align-items:stretch;}
+  .hero-btns .pill{width:100%;justify-content:center;}
+  /* Stats */
+  .stat-item{padding:18px 14px;}
+  .stat-val{font-size:24px;}
+  .stat-label{font-size:10px;letter-spacing:.04em;}
+  .stat-sub{font-size:9px;}
+  /* Hide scroll indicator — not useful on touch devices */
+  .hero-scroll{display:none;}
 }
 </style>
 
@@ -1607,6 +1632,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   position: absolute;
   transform: translate(-50%, -50%);
   cursor: pointer; z-index: 30;
+  touch-action: manipulation;
+  /* Expand invisible tap area to ≥44px */
+  padding: 12px;
+  margin: -12px;
 }
 .hs-o {
   width: 20px; height: 20px; border-radius: 50%;
@@ -1989,7 +2018,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   .sc:nth-child(4) { border-top: 1px solid var(--b2); border-right: none; }
   .sc:nth-child(5) { grid-column: 1/-1; border-top: 1px solid var(--b2); border-right: none; }
   .cta-mobile { margin-top: 14px; }
-  .studio .pill { padding: 12px 18px; font-size: 11px; }
+  .studio .pill { padding: 14px 18px; font-size: 11px; min-height: 44px; }
   .pop, .pop.fl, .pop.fu { width: min(94vw, 360px); padding: 18px 14px 14px; }
 }
 
@@ -2510,6 +2539,7 @@ Zeker een aanrader!<!-- R-CONTENT --></div> <span class="ti-read-more" data-cont
       display: flex; align-items: center; justify-content: center;
       transition: background .2s, border-color .2s, transform .15s;
       line-height: 1;
+      touch-action: manipulation;
     }
     .ttc-btn:hover { background: rgba(254,200,62,.12); border-color: rgba(254,200,62,.4); }
     .ttc-btn:active { transform: scale(.92); }
@@ -3261,6 +3291,8 @@ Zeker een aanrader!<!-- R-CONTENT --></div> <span class="ti-read-more" data-cont
       transition: background .2s, border-color .2s, color .2s, opacity .2s;
       white-space: nowrap;
       font-family: 'Barlow', sans-serif;
+      touch-action: manipulation;
+      min-height: 44px;
     }
     .eq-cta svg { width: 13px; height: 13px; flex-shrink: 0; }
 
@@ -3342,7 +3374,7 @@ Zeker een aanrader!<!-- R-CONTENT --></div> <span class="ti-read-more" data-cont
         padding: 16px 5% 24px;
         gap: 8px;
       }
-      .eq-cta { font-size: 9px; padding: 11px 16px; }
+      .eq-cta { font-size: 9px; padding: 12px 16px; min-height: 44px; }
     }
 
     @media (max-width: 480px) {
@@ -3350,6 +3382,10 @@ Zeker een aanrader!<!-- R-CONTENT --></div> <span class="ti-read-more" data-cont
       .eq-wheel { height: 180px; }
       .eq-eyebrow { font-size: 9px; letter-spacing: .22em; }
       #eq-vid   { width: 95%; height: 95%; }
+      /* Stack eq CTAs vertically, full-width on small phones */
+      .eq-ctas  { flex-direction: column; align-items: stretch; padding: 12px 5% 24px; }
+      .eq-cta   { font-size: 10px; padding: 14px 20px; min-height: 44px; justify-content: center; flex: none !important; }
+      .eq-cta svg { width: 14px; height: 14px; }
     }
 
   </style>
@@ -3754,6 +3790,8 @@ Zeker een aanrader!<!-- R-CONTENT --></div> <span class="ti-read-more" data-cont
       text-decoration: none;
       transition: all .2s ease;
       white-space: nowrap;
+      touch-action: manipulation;
+      min-height: 44px;
     }
     .pill-y { background: #FEC83E; color: #000; }
     .pill-y:hover { background: #FFD96A; transform: translateY(-2px); box-shadow: 0 10px 26px rgba(254,200,62,.38); }
@@ -3798,8 +3836,8 @@ Zeker een aanrader!<!-- R-CONTENT --></div> <span class="ti-read-more" data-cont
       #ttc-cta-section { padding: 0 16px 48px; }
       .ttc-word-size { font-size: clamp(72px, 18vw, 178px); }
       .ttc-sub { font-size: 14px; max-width: 100%; }
-      .ttc-buttons { max-width: 260px; gap: 9px; }
-      .pill { font-size: 11px; padding: 12px 18px; }
+      .ttc-buttons { max-width: 280px; gap: 9px; }
+      .pill { font-size: 11px; padding: 13px 18px; min-height: 44px; }
       .ttc-tagline { font-size: 10px; }
     }
 
